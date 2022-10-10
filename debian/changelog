@@ -1,6 +1,7 @@
 qt6-charts (6.2.4.1-1+dde) stable; urgency=medium
 
   * Adapt to V23.
+  * Update symbols.
 
  -- Lu YaNing <luyaning@uniontech.com>  Sun, 09 Oct 2022 14:53:31 +0800
 
