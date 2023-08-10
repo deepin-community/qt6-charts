@@ -1,4 +1,10 @@
 usr/include/*/qt6/QtCharts/6.*
 usr/include/*/qt6/QtChartsQml/6.*
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6qtchartsqml2AdditionalTargetInfo.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6qtchartsqml2Config.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6qtchartsqml2ConfigVersion.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6qtchartsqml2ConfigVersionImpl.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6qtchartsqml2Targets.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Qml/QmlPlugins/Qt6qtchartsqml2Targets-none.cmake
 usr/lib/*/qt6/mkspecs/modules/qt_lib_charts_private.pri
 usr/lib/*/qt6/mkspecs/modules/qt_lib_chartsqml_private.pri

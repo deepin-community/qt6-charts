@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include <QtCharts/QChartView>
 #include <private/qchartview_p.h>
@@ -234,17 +208,18 @@ void QChartView::mouseReleaseEvent(QMouseEvent *event)
             // Since plotArea uses QRectF and rubberband uses QRect, we can't just blindly use
             // rubberband's dimensions for vertical and horizontal rubberbands, where one
             // dimension must match the corresponding plotArea dimension exactly.
-            if (d_ptr->m_rubberBandFlags.testFlag(VerticalRubberBand)) {
-                rect.setX(d_ptr->m_chart->plotArea().x());
-                rect.setWidth(d_ptr->m_chart->plotArea().width());
-            } else if (d_ptr->m_rubberBandFlags.testFlag(HorizontalRubberBand)) {
-                rect.setY(d_ptr->m_chart->plotArea().y());
-                rect.setHeight(d_ptr->m_chart->plotArea().height());
+            if (!d_ptr->m_rubberBandFlags.testFlag(RectangleRubberBand)) {
+                if (d_ptr->m_rubberBandFlags.testFlag(VerticalRubberBand)) {
+                    rect.setX(d_ptr->m_chart->plotArea().x());
+                    rect.setWidth(d_ptr->m_chart->plotArea().width());
+                } else if (d_ptr->m_rubberBandFlags.testFlag(HorizontalRubberBand)) {
+                    rect.setY(d_ptr->m_chart->plotArea().y());
+                    rect.setHeight(d_ptr->m_chart->plotArea().height());
+                }
             }
             d_ptr->m_chart->zoomIn(rect);
             event->accept();
         }
-
     } else if (d_ptr->m_rubberBand && event->button() == Qt::RightButton) {
             // If vertical or horizontal rubberband mode, restrict zoom out to specified axis.
             // Since there is no suitable API for that, use zoomIn with rect bigger than the
@@ -255,13 +230,12 @@ void QChartView::mouseReleaseEvent(QMouseEvent *event)
                 if (d_ptr->m_rubberBandFlags.testFlag(VerticalRubberBand)) {
                     qreal adjustment = rect.height() / 2;
                     rect.adjust(0, -adjustment, 0, adjustment);
-                } else if (d_ptr->m_rubberBandFlags.testFlag(HorizontalRubberBand)) {
+                }
+                if (d_ptr->m_rubberBandFlags.testFlag(HorizontalRubberBand)) {
                     qreal adjustment = rect.width() / 2;
                     rect.adjust(-adjustment, 0, adjustment, 0);
                 }
                 d_ptr->m_chart->zoomIn(rect);
-            } else {
-                d_ptr->m_chart->zoomOut();
             }
             event->accept();
     } else {

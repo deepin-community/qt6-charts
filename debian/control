@@ -1,33 +1,36 @@
 Source: qt6-charts
 Section: libs
 Priority: optional
-Maintainer: Deepin Developer <deepin-dev@deepin.org>
-Uploaders: Deepin Packages Builder <packages@deepin.org>
-Build-Depends: cmake (>= 3.18~),
+Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
+Uploaders: Patrick Franz <deltaone@debian.org>, Lu YaNing <dluyaning@gmail.com>
+Build-Depends: cmake (>= 3.24~),
                debhelper-compat (= 13),
                libgl-dev,
-               libqt6opengl6-dev (>= 6.2.4~),
                libssl-dev,
                libvulkan-dev [linux-any],
                ninja-build,
                pkg-config,
                pkg-kde-tools,
-               qml6-module-qtquick (>= 6.2.4~),
-               qml6-module-qttest (>= 6.2.4~),
-               qt6-base-dev (>= 6.2.4~),
-               qt6-base-private-dev (>= 6.2.4~),
-               qt6-declarative-dev (>= 6.2.4~),
+               qml6-module-qtquick (>= 6.4.2+dfsg~),
+               qml6-module-qttest (>= 6.4.2+dfsg~),
+               qt6-base-dev (>= 6.4.2+dfsg~),
+               qt6-base-private-dev (>= 6.4.2+dfsg~),
+               qt6-declarative-dev (>= 6.4.2+dfsg~),
                xauth <!nocheck>,
                xvfb <!nocheck>,
-Standards-Version: 4.6.0
+Build-Depends-Indep: qt6-base-dev (>= 6.4~) <!nodoc>,
+                     qt6-documentation-tools (>= 6.4~) <!nodoc>,
+Standards-Version: 4.6.2
 Homepage: https://www.qt.io/developers/
+Vcs-Browser: https://salsa.debian.org/qt-kde-team/qt6/qt6-charts
+Vcs-Git: https://salsa.debian.org/qt-kde-team/qt6/qt6-charts.git
 Rules-Requires-Root: no
 
 Package: libqt6charts6
 Architecture: any
 Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Qt 6 charts library
+Description: Qt 6 Charts library
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
  .
@@ -39,36 +42,75 @@ Package: libqt6chartsqml6
 Architecture: any
 Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Qt 6 charts QML library
+Description: Qt 6 Charts QML library
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
  .
  The Qt Charts module provides a set of easy to use chart components.
  .
- This package contains the shared library for Qt 6 Charts Qml.
+ This package contains the shared library for Qt 6 Charts QML.
 
 Package: qml6-module-qtcharts
 Architecture: any
 Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Qt 6 charts QML module
+Description: Qt 6 Charts QML module
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
  .
  The Qt Charts module provides a set of easy to use chart components.
  .
- This package provides the QML module for Qt 6 charts.
+ This package provides the QML module for Qt 6 Charts.
 
-Package: libqt6charts6-dev
+Package: qt6-charts-dev
+Provides: libqt6charts6-dev (= ${binary:Version})
 Section: libdevel
 Architecture: any
 Multi-Arch: same
-Depends: libqt6charts6 (= ${binary:Version}), qt6-base-dev, ${misc:Depends}
-Description: Qt 6 charts - development files
+Depends: libqt6charts6 (= ${binary:Version}),
+         libqt6chartsqml6  (= ${binary:Version}),
+         qt6-base-dev,
+         ${misc:Depends},
+Breaks: libqt6charts6-dev (<< 6.3.1-3~)
+Replaces: libqt6charts6-dev (<< 6.3.1-3~)
+Description: Qt 6 Charts - development files
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
  .
  The Qt Charts module provides a set of easy to use chart components.
  .
  This package contains the header development files used for building Qt 6
- applications using QtCharts.
+ applications using Qt Charts.
+
+Package: qt6-charts-doc
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Depends: qt6-base-doc, ${misc:Depends},
+Description: Qt 6 Charts documentation
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ This package contains the documentation for Qt 6 Charts.
+
+Package: qt6-charts-doc-html
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Depends: qt6-base-doc-html, ${misc:Depends},
+Description: Qt 6 Charts HTML documentation
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ This package contains the HTML documentation for Qt 6 Charts.
+
+Package: qt6-charts-examples
+Architecture: any
+Multi-Arch: same
+Section: misc
+Depends: ${misc:Depends}, ${shlibs:Depends},
+Description: Qt 6 Charts examples
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ This package contains the examples for the Qt Charts submodule.

@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2021 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include <QtCharts/qlogvalueaxis.h>
 #include <QtCore/qmath.h>
@@ -53,8 +27,8 @@ QList<qreal> ChartLogValueAxisY::calculateLayout() const
     QList<qreal> points;
     points.resize(m_axis->tickCount());
 
-    const qreal logMax = std::log10(m_axis->max()) / std::log10(m_axis->base());
-    const qreal logMin = std::log10(m_axis->min()) / std::log10(m_axis->base());
+    const qreal logMax = qLn(m_axis->max()) / qLn(m_axis->base());
+    const qreal logMin = qLn(m_axis->min()) / qLn(m_axis->base());
     const qreal leftEdge = qMin(logMin, logMax);
     const qreal ceilEdge = std::ceil(leftEdge);
 
@@ -92,18 +66,10 @@ QSizeF ChartLogValueAxisY::sizeHint(Qt::SizeHint which, const QSizeF &constraint
 {
     Q_UNUSED(constraint);
 
-    QSizeF sh;
-
-    QSizeF base = VerticalAxis::sizeHint(which, constraint);
+    const QSizeF base = VerticalAxis::sizeHint(which, constraint);
+    const int tickCount = m_axis->tickCount();
     QStringList ticksList;
-    qreal logMax = std::log10(m_axis->max()) / std::log10(m_axis->base());
-    qreal logMin = std::log10(m_axis->min()) / std::log10(m_axis->base());
-    int tickCount = qAbs(qCeil(logMax) - qCeil(logMin));
-
-    // If the high edge sits exactly on the tick value, add a tick
-    qreal highValue = logMin < logMax ? logMax : logMin;
-    if (qFuzzyCompare(highValue, std::ceil(highValue)))
-        tickCount++;
+    QSizeF sh;
 
     if (m_axis->max() > m_axis->min() && tickCount > 0)
         ticksList = createLogValueLabels(m_axis->min(), m_axis->max(), m_axis->base(), tickCount, m_axis->labelFormat());
@@ -116,26 +82,36 @@ QSizeF ChartLogValueAxisY::sizeHint(Qt::SizeHint which, const QSizeF &constraint
 
     switch (which) {
     case Qt::MinimumSize: {
-        QRectF boundingRect = ChartPresenter::textBoundingRect(axis()->labelsFont(),
-                                                               QStringLiteral("..."),
-                                                               axis()->labelsAngle());
-        width = boundingRect.width() + labelPadding() + base.width() + 1.0;
-        height = boundingRect.height() / 2.0;
+        if (labelsVisible()) {
+            QRectF boundingRect = ChartPresenter::textBoundingRect(axis()->labelsFont(),
+                                                                   QStringLiteral("..."),
+                                                                   axis()->labelsAngle());
+            width = boundingRect.width() + labelPadding() + base.width() + 1.0;
+            height = boundingRect.height() / 2.0;
+        } else {
+            width = base.width() + 1.0;
+            height = 0;
+        }
         sh = QSizeF(width, height);
         break;
     }
     case Qt::PreferredSize: {
-        qreal labelWidth = 0.0;
-        qreal firstHeight = -1.0;
-        foreach (const QString& s, ticksList) {
-            QRectF rect = ChartPresenter::textBoundingRect(axis()->labelsFont(), s, axis()->labelsAngle());
-            labelWidth = qMax(rect.width(), labelWidth);
-            height = rect.height();
-            if (firstHeight < 0.0)
-                firstHeight = height;
+        if (labelsVisible()) {
+            qreal labelWidth = 0.0;
+            qreal firstHeight = -1.0;
+            foreach (const QString& s, ticksList) {
+                QRectF rect = ChartPresenter::textBoundingRect(axis()->labelsFont(), s, axis()->labelsAngle());
+                labelWidth = qMax(rect.width(), labelWidth);
+                height = rect.height();
+                if (firstHeight < 0.0)
+                    firstHeight = height;
+            }
+            width = labelWidth + labelPadding() + base.width() + 2.0; //two pixels of tolerance
+            height = qMax(height, firstHeight) / 2.0;
+        } else {
+            width = base.width() + 2.0;
+            height = 0;
         }
-        width = labelWidth + labelPadding() + base.width() + 2.0; //two pixels of tolerance
-        height = qMax(height, firstHeight) / 2.0;
         sh = QSizeF(width, height);
         break;
     }
