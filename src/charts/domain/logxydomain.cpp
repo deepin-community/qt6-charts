@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2021 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include <private/logxydomain_p.h>
 #include <private/qabstractaxis_p.h>
@@ -58,8 +32,8 @@ void LogXYDomain::setRange(qreal minX, qreal maxX, qreal minY, qreal maxY)
         m_minX = minX;
         m_maxX = maxX;
         axisXChanged = true;
-        qreal logMinX = std::log10(m_minX) / std::log10(m_logBaseX);
-        qreal logMaxX = std::log10(m_maxX) / std::log10(m_logBaseX);
+        qreal logMinX = qLn(m_minX) / qLn(m_logBaseX);
+        qreal logMaxX = qLn(m_maxX) / qLn(m_logBaseX);
         m_logLeftX = logMinX < logMaxX ? logMinX : logMaxX;
         m_logRightX = logMinX > logMaxX ? logMinX : logMaxX;
         if(!m_signalsBlocked)
@@ -162,7 +136,7 @@ QPointF LogXYDomain::calculateGeometryPoint(const QPointF &point, bool &ok) cons
     if (!m_reverseY)
         y = m_size.height() - y;
     if (point.x() > 0) {
-        x = ((std::log10(point.x()) / std::log10(m_logBaseX)) - m_logLeftX) * deltaX;
+        x = ((qLn(point.x()) / qLn(m_logBaseX)) - m_logLeftX) * deltaX;
         if (m_reverseX)
             x = m_size.width() - x;
         ok = true;
@@ -180,11 +154,11 @@ QList<QPointF> LogXYDomain::calculateGeometryPoints(const QList<QPointF> &list) 
     const qreal deltaY = m_size.height() / (m_maxY - m_minY);
 
     QList<QPointF> result;
-    result.resize(list.count());
+    result.resize(list.size());
 
-    for (int i = 0; i < list.count(); ++i) {
+    for (int i = 0; i < list.size(); ++i) {
         if (list[i].x() > 0) {
-            qreal x = ((std::log10(list[i].x()) / std::log10(m_logBaseX)) - m_logLeftX) * deltaX;
+            qreal x = ((qLn(list[i].x()) / qLn(m_logBaseX)) - m_logLeftX) * deltaX;
             if (m_reverseX)
                 x = m_size.width() - x;
             qreal y = (list[i].y() - m_minY) * deltaY;
@@ -239,8 +213,8 @@ bool LogXYDomain::detachAxis(QAbstractAxis *axis)
 void LogXYDomain::handleHorizontalAxisBaseChanged(qreal baseX)
 {
     m_logBaseX = baseX;
-    qreal logMinX = std::log10(m_minX) / std::log10(m_logBaseX);
-    qreal logMaxX = std::log10(m_maxX) / std::log10(m_logBaseX);
+    qreal logMinX = qLn(m_minX) / qLn(m_logBaseX);
+    qreal logMaxX = qLn(m_maxX) / qLn(m_logBaseX);
     m_logLeftX = logMinX < logMaxX ? logMinX : logMaxX;
     m_logRightX = logMinX > logMaxX ? logMinX : logMaxX;
     emit updated();

@@ -1,12 +1,170 @@
-qt6-charts (6.2.4.1-1+dde) stable; urgency=medium
+qt6-charts (6.4.2-5) unstable; urgency=medium
 
-  * Adapt to V23.
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 01 Aug 2023 18:19:38 +0200
+
+qt6-charts (6.4.2-4) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * Remove build-dependency on libqt6opengl6-dev as it has been merged
+    into qt6-base-dev.
+  * Add binary package for examples (Closes: #1042323).
+  * Add binary packages for documentation.
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 27 Jul 2023 19:21:35 +0200
+
+qt6-charts (6.4.2-3) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Do not install cmake-files for Qml plugins (Closes: #1035792).
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 11 May 2023 12:25:19 +0200
+
+qt6-charts (6.4.2-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Fix FTCBFS: Pass QT_HOST_PATH, thx to Helmut Grohne (Closes:
+    #1030035).
+
+ -- Patrick Franz <deltaone@debian.org>  Wed, 01 Feb 2023 21:43:24 +0100
+
+qt6-charts (6.4.2-1) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Switch to the official 6.4.2 tarball, the tarball is the same.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 24 Jan 2023 12:26:24 +0100
+
+qt6-charts (6.4.2~rc1-3) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Add a Provides for libqt6charts6-dev.
+
+ -- Patrick Franz <deltaone@debian.org>  Sat, 31 Dec 2022 14:43:52 +0100
+
+qt6-charts (6.4.2~rc1-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Fri, 30 Dec 2022 16:58:10 +0100
+
+qt6-charts (6.4.2~rc1-1) experimental; urgency=medium
+
+  [ Lisandro Damián Nicanor Pérez Meyer ]
+  * New upstream release.
+    - Bump Qt build dependencies.
+  * Bump standards version to 4.6.2, no changes required.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 27 Dec 2022 22:26:13 +0100
+
+qt6-charts (6.4.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.4.1).
+  * Bump Qt B-Ds to 6.4.1.
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 17 Nov 2022 19:31:05 +0100
+
+qt6-charts (6.4.0-2) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * Enable link time optimization (Closes: #1015618).
+
+ -- Patrick Franz <deltaone@debian.org>  Sun, 13 Nov 2022 12:05:38 +0100
+
+qt6-charts (6.4.0-1) experimental; urgency=medium
+
+  [ Lisandro Damián Nicanor Pérez Meyer ]
+  * Bump minimum CMake version in order to get pkg-config's .pc files.
+
+  [ Patrick Franz ]
+  * Increase CMake verbosity level.
+  * New upstream release (6.4.0).
+  * Bump Qt B-Ds to 6.4.0.
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Sun, 16 Oct 2022 00:15:13 +0200
+
+qt6-charts (6.3.1-3) unstable; urgency=medium
+
+  * Team upload.
+  * Rename libqt6chart6-dev to qt6-charts-dev, as this source package ships
+    more than one library.
+    - No current reverse dependencies are affected.
+    - Add libqt6chartsqml6 as a dependency of this package.
+  * Update symbols files with current build log.
+
+ -- Lisandro Damián Nicanor Pérez Meyer <lisandro@debian.org>  Thu, 01 Sep 2022 18:33:15 -0300
+
+qt6-charts (6.3.1-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Mon, 15 Aug 2022 19:22:26 +0200
+
+qt6-charts (6.3.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.3.1).
+  * Bump Qt B-Ds to 6.3.1.
+  * Bump Standards-Version to 4.6.1 (no changes needed).
+  * Update list of installed files.
+
+ -- Patrick Franz <deltaone@debian.org>  Sun, 17 Jul 2022 11:33:59 +0200
+
+qt6-charts (6.3.0-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.3.0).
+  * Bump Qt B-Ds to 6.3.0.
+  * Update list of installed files.
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 14 Jun 2022 21:48:48 +0200
+
+qt6-charts (6.2.4-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Fri, 22 Apr 2022 20:06:25 +0200
+
+qt6-charts (6.2.4-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.2.4).
+  * Bump Qt B-Ds to 6.2.4.
+
+ -- Patrick Franz <deltaone@debian.org>  Wed, 30 Mar 2022 21:55:04 +0200
+
+qt6-charts (6.2.2-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 15 Feb 2022 22:34:05 +0100
+
+qt6-charts (6.2.2-1) experimental; urgency=medium
+
+  [ Lu YaNing ]
+  * Fix d/copyright Upstream-Name.
+  * List cmake files in detail.
+  * Update descriptions.
   * Update symbols.
 
- -- Lu YaNing <luyaning@uniontech.com>  Sun, 09 Oct 2022 14:53:31 +0800
+  [ Patrick Franz ]
+  * New upstream release (6.2.2).
+  * Bump Qt B-Ds to 6.2.2.
+  * Update installed files.
 
-qt6-charts (6.2.4-1+dde) stable; urgency=medium
+ -- Patrick Franz <deltaone@debian.org>  Fri, 03 Dec 2021 17:13:38 +0100
 
-  * ['Rebuild  against by  current gcc 11.2']
+qt6-charts (6.2.1-1) experimental; urgency=medium
 
- -- Deepin Packages Builder <packages@deepin.org>  Wed, 31 Aug 2022 14:54:35 +0800
+  * Initial release (Closes: #999630)
+
+ -- Patrick Franz <deltaone@debian.org>  Sun, 14 Nov 2021 22:54:22 +0100

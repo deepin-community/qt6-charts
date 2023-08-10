@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2021 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include <private/chartaxiselement_p.h>
 #include <private/qabstractaxis_p.h>
@@ -42,20 +16,18 @@
 
 QT_BEGIN_NAMESPACE
 
-static const char *labelFormatMatchString = "%[\\-\\+#\\s\\d\\.\\'lhjztL]*([dicuoxfegXFEG])";
-static const char *labelFormatMatchLocalizedString = "^([^%]*)%\\.(\\d+)([defgiEG])(.*)$";
-static QRegularExpression *labelFormatMatcher = 0;
-static QRegularExpression *labelFormatMatcherLocalized = 0;
-class StaticLabelFormatMatcherDeleter
+static const QRegularExpression &labelFormatMatcher()
 {
-public:
-    StaticLabelFormatMatcherDeleter() {}
-    ~StaticLabelFormatMatcherDeleter() {
-        delete labelFormatMatcher;
-        delete labelFormatMatcherLocalized;
-    }
-};
-static StaticLabelFormatMatcherDeleter staticLabelFormatMatcherDeleter;
+    static const QRegularExpression re(
+            QLatin1String("%[\\-\\+#\\s\\d\\.\\'lhjztL]*([dicuoxfegXFEG])"));
+    return re;
+}
+
+static const QRegularExpression &labelFormatMatcherLocalized()
+{
+    static const QRegularExpression re(QLatin1String("^([^%]*)%\\.(\\d+)([defgiEG])(.*)$"));
+    return re;
+}
 
 ChartAxisElement::ChartAxisElement(QAbstractAxis *axis, QGraphicsItem *item, bool intervalAxis)
     : ChartElement(item),
@@ -373,7 +345,7 @@ bool ChartAxisElement::emptyAxis() const
 {
     return axisGeometry().isEmpty()
            || gridGeometry().isEmpty()
-           || qFuzzyCompare(min(), max());
+           || qFuzzyIsNull(max() - min());
 }
 
 qreal ChartAxisElement::min() const
@@ -461,7 +433,7 @@ void ChartAxisElement::prepareColorScale(const qreal width, const qreal height)
                     gradient.setColorAt(stop.first, stop.second);
             } else {
                 gradient = QLinearGradient(QPointF(0, 0), QPointF(0, height));
-                for (int i = colorAxis->gradient().stops().length() - 1; i >= 0; --i) {
+                for (int i = colorAxis->gradient().stops().size() - 1; i >= 0; --i) {
                     const auto &stop = colorAxis->gradient().stops()[i];
                     gradient.setColorAt(1 - stop.first, stop.second);
                 }
@@ -478,6 +450,21 @@ void ChartAxisElement::prepareColorScale(const qreal width, const qreal height)
     }
 }
 
+static int precisionDigits(qreal min, qreal max, int ticks)
+{
+    // How many digits of each tick value should we display after the decimal point ?
+    // For example tick marks 1.002 and 1.003 have a difference of 0.001 and need 3 decimals.
+    if (ticks > 1) {
+        // Number of digits after decimal that *don't* change between ticks:
+        const int gap = -qFloor(std::log10((max - min) / (ticks - 1)));
+        if (gap > 0)
+            return gap + 1;
+    }
+    // We want at least one digit after the decimal point even when digits
+    // before are changing, or when we only have a single tick-mark:
+    return 1;
+}
+
 QStringList ChartAxisElement::createValueLabels(qreal min, qreal max, int ticks,
                                                 qreal tickInterval, qreal tickAnchor,
                                                 QValueAxis::TickType tickType,
@@ -489,11 +476,7 @@ QStringList ChartAxisElement::createValueLabels(qreal min, qreal max, int ticks,
         return labels;
 
     if (format.isEmpty()) {
-        // Calculate how many decimal digits are needed to show difference between ticks,
-        // for example tick marks 1.002 and 1.003 have a difference of 0.001 and need 3 decimals.
-        // For differences >= 1 (positive log10) use always 1 decimal.
-        double l10 = std::log10((max - min) / (ticks - 1));
-        int n = qMax(-qFloor(l10), 0) + 1;
+        const int n = precisionDigits(min, max, ticks);
         if (tickType == QValueAxis::TicksFixed) {
             for (int i = 0; i < ticks; i++) {
                 qreal value = min + (i * (max - min) / (ticks - 1));
@@ -516,11 +499,8 @@ QStringList ChartAxisElement::createValueLabels(qreal min, qreal max, int ticks,
         QString postStr;
         int precision = 6; // Six is the default precision in Qt API
         if (presenter()->localizeNumbers()) {
-            if (!labelFormatMatcherLocalized)
-                labelFormatMatcherLocalized
-                        = new QRegularExpression(QString::fromLatin1(labelFormatMatchLocalizedString));
             QRegularExpressionMatch rmatch;
-            if (format.indexOf(*labelFormatMatcherLocalized, 0, &rmatch) != -1) {
+            if (format.indexOf(labelFormatMatcherLocalized(), 0, &rmatch) != -1) {
                 preStr = rmatch.captured(1);
                 if (!rmatch.captured(2).isEmpty())
                     precision = rmatch.captured(2).toInt();
@@ -528,10 +508,8 @@ QStringList ChartAxisElement::createValueLabels(qreal min, qreal max, int ticks,
                 postStr = rmatch.captured(4);
             }
         } else {
-            if (!labelFormatMatcher)
-                labelFormatMatcher = new QRegularExpression(QString::fromLatin1(labelFormatMatchString));
             QRegularExpressionMatch rmatch;
-            if (format.indexOf(*labelFormatMatcher, 0, &rmatch) != -1)
+            if (format.indexOf(labelFormatMatcher(), 0, &rmatch) != -1)
                 formatSpec = rmatch.captured(1);
         }
         if (tickType == QValueAxis::TicksFixed) {
@@ -562,17 +540,9 @@ QStringList ChartAxisElement::createLogValueLabels(qreal min, qreal max, qreal b
     if (max <= min || ticks < 1)
         return labels;
 
-    int firstTick;
-    if (base > 1)
-        firstTick = qCeil(std::log10(min) / std::log10(base));
-    else
-        firstTick = qCeil(std::log10(max) / std::log10(base));
-
+    const int firstTick = qCeil(qLn(base > 1 ? min : max) / qLn(base));
     if (format.isEmpty()) {
-        int n = 0;
-        if (ticks > 1)
-            n = qMax(-qFloor(std::log10((max - min) / (ticks - 1))), 0);
-        n++;
+        const int n = precisionDigits(min, max, ticks);
         for (int i = firstTick; i < ticks + firstTick; i++) {
             qreal value = qPow(base, i);
             labels << presenter()->numberToString(value, 'f', n);
@@ -584,11 +554,8 @@ QStringList ChartAxisElement::createLogValueLabels(qreal min, qreal max, qreal b
         QString postStr;
         int precision = 6; // Six is the default precision in Qt API
         if (presenter()->localizeNumbers()) {
-            if (!labelFormatMatcherLocalized)
-                labelFormatMatcherLocalized =
-                        new QRegularExpression(QString::fromLatin1(labelFormatMatchLocalizedString));
             QRegularExpressionMatch rmatch;
-            if (format.indexOf(*labelFormatMatcherLocalized, 0, &rmatch) != -1) {
+            if (format.indexOf(labelFormatMatcherLocalized(), 0, &rmatch) != -1) {
                 preStr = rmatch.captured(1);
                 if (!rmatch.captured(2).isEmpty())
                     precision = rmatch.captured(2).toInt();
@@ -596,10 +563,8 @@ QStringList ChartAxisElement::createLogValueLabels(qreal min, qreal max, qreal b
                 postStr = rmatch.captured(4);
             }
         } else {
-            if (!labelFormatMatcher)
-                labelFormatMatcher = new QRegularExpression(QString::fromLatin1(labelFormatMatchString));
             QRegularExpressionMatch rmatch;
-            if (format.indexOf(*labelFormatMatcher, 0, &rmatch) != -1)
+            if (format.indexOf(labelFormatMatcher(), 0, &rmatch) != -1)
                 formatSpec = rmatch.captured(1);
         }
         for (int i = firstTick; i < ticks + firstTick; i++) {
@@ -633,7 +598,7 @@ QStringList ChartAxisElement::createColorLabels(qreal min, qreal max, int ticks)
     if (max <= min || ticks < 1)
         return labels;
 
-    int n = qMax(int(-qFloor(std::log10((max - min) / (ticks - 1)))), 0) + 1;
+    const int n = precisionDigits(min, max, ticks);
     for (int i = 0; i < ticks; ++i) {
         qreal value = min + (i * (max - min) / (ticks - 1));
         labels << presenter()->numberToString(value, 'f', n);
@@ -667,6 +632,11 @@ void ChartAxisElement::setLabelsEditable(bool labelsEditable)
         }
         m_labelsEditable = labelsEditable;
     }
+}
+
+bool ChartAxisElement::labelsVisible() const
+{
+    return m_labels->isVisible();
 }
 
 void ChartAxisElement::axisSelected()

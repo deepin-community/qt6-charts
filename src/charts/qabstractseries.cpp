@@ -1,31 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2021 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include <QtCharts/QAbstractSeries>
 #include <private/qabstractseries_p.h>
@@ -376,12 +350,11 @@ void QAbstractSeries::hide()
  */
 bool QAbstractSeries::attachAxis(QAbstractAxis* axis)
 {
-    if(d_ptr->m_chart) {
+    if (d_ptr->m_chart)
         return d_ptr->m_chart->d_ptr->m_dataset->attachAxis(this, axis);
-    } else {
-        qWarning()<<"Series not in the chart. Please addSeries to chart first.";
-        return false;
-    }
+
+    qWarning("Series not in the chart. Please addSeries to chart first.");
+    return false;
 }
 
 /*!
@@ -393,13 +366,11 @@ bool QAbstractSeries::attachAxis(QAbstractAxis* axis)
  */
 bool QAbstractSeries::detachAxis(QAbstractAxis* axis)
 {
-    if(d_ptr->m_chart) {
+    if (d_ptr->m_chart)
         return d_ptr->m_chart->d_ptr->m_dataset->detachAxis(this, axis);
-    }
-    else {
-        qWarning()<<"Series not in the chart. Please addSeries to chart first.";
-        return false;
-    }
+
+    qWarning("Series not in the chart. Please addSeries to chart first.");
+    return false;
 }
 
 /*!
@@ -416,8 +387,8 @@ QList<QAbstractAxis*> QAbstractSeries::attachedAxes()
 
 QAbstractSeriesPrivate::QAbstractSeriesPrivate(QAbstractSeries *q)
     : q_ptr(q),
-      m_chart(0),
-      m_item(0),
+      m_chart(nullptr),
+      m_item(nullptr),
       m_domain(new XYDomain()),
       m_visible(true),
       m_opacity(1.0),
@@ -434,10 +405,11 @@ void QAbstractSeriesPrivate::setDomain(AbstractDomain* domain)
 {
     Q_ASSERT(domain);
     if(m_domain.data()!=domain) {
-        if(!m_item.isNull()) QObject::disconnect(m_domain.data(), SIGNAL(updated()), m_item.data(), SLOT(handleDomainUpdated()));
+        if (m_item)
+            QObject::disconnect(m_domain.data(), SIGNAL(updated()), m_item.get(), SLOT(handleDomainUpdated()));
         m_domain.reset(domain);
-        if(!m_item.isNull()) {
-            QObject::connect(m_domain.data(), SIGNAL(updated()),m_item.data(), SLOT(handleDomainUpdated()));
+        if (m_item) {
+            QObject::connect(m_domain.data(), SIGNAL(updated()), m_item.get(), SLOT(handleDomainUpdated()));
             m_item->handleDomainUpdated();
         }
     }
@@ -455,9 +427,9 @@ ChartPresenter *QAbstractSeriesPrivate::presenter() const
 
 void QAbstractSeriesPrivate::initializeGraphics(QGraphicsItem* parent)
 {
-    Q_ASSERT(!m_item.isNull());
+    Q_ASSERT(m_item);
     Q_UNUSED(parent);
-    QObject::connect(m_domain.data(), SIGNAL(updated()),m_item.data(), SLOT(handleDomainUpdated()));
+    QObject::connect(m_domain.data(), SIGNAL(updated()), m_item.get(), SLOT(handleDomainUpdated()));
 }
 
 void QAbstractSeriesPrivate::initializeAnimations(QChart::AnimationOptions options, int duration,

@@ -1,0 +1,9 @@
+Document: qt6-charts-manual
+Title: Qt 6 Charts
+Author: The Qt Company Ltd
+Abstract: This is the HTML documentation for Qt 6 Charts
+Section: Programming/C++
+
+Format: HTML
+Index: /usr/share/doc/qt6-charts-doc-html/html/qtcharts/qtcharts-index.html
+Files: /usr/share/doc/qt6-charts-doc-html/html/qtcharts/*.html
