@@ -2,7 +2,7 @@ Source: qt6-charts
 Section: libs
 Priority: optional
 Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
-Uploaders: Patrick Franz <deltaone@debian.org>, Lu YaNing <dluyaning@gmail.com>
+Uploaders: Patrick Franz <deltaone@debian.org>, Lu YaNing <dluyaning@gmail.com>,
 Build-Depends: cmake (>= 3.24~),
                debhelper-compat (= 13),
                libgl-dev,
@@ -11,15 +11,14 @@ Build-Depends: cmake (>= 3.24~),
                ninja-build,
                pkg-config,
                pkg-kde-tools,
-               qml6-module-qtquick (>= 6.4.2+dfsg~),
-               qml6-module-qttest (>= 6.4.2+dfsg~),
-               qt6-base-dev (>= 6.4.2+dfsg~),
-               qt6-base-private-dev (>= 6.4.2+dfsg~),
-               qt6-declarative-dev (>= 6.4.2+dfsg~),
+               qt6-base-dev (>= 6.6.1+dfsg~),
+               qt6-base-private-dev (>= 6.6.1+dfsg~),
+               qt6-declarative-dev (>= 6.6.1+dfsg~),
+               qt6-multimedia-dev (>= 6.6.1~),
                xauth <!nocheck>,
                xvfb <!nocheck>,
-Build-Depends-Indep: qt6-base-dev (>= 6.4~) <!nodoc>,
-                     qt6-documentation-tools (>= 6.4~) <!nodoc>,
+Build-Depends-Indep: qt6-base-dev (>= 6.6~) <!nodoc>,
+                     qt6-documentation-tools (>= 6.6~) <!nodoc>,
 Standards-Version: 4.6.2
 Homepage: https://www.qt.io/developers/
 Vcs-Browser: https://salsa.debian.org/qt-kde-team/qt6/qt6-charts
@@ -29,7 +28,7 @@ Rules-Requires-Root: no
 Package: libqt6charts6
 Architecture: any
 Multi-Arch: same
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends},
 Description: Qt 6 Charts library
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
@@ -38,22 +37,12 @@ Description: Qt 6 Charts library
  .
  This package contains the shared library for Qt 6 Charts.
 
-Package: libqt6chartsqml6
-Architecture: any
-Multi-Arch: same
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Qt 6 Charts QML library
- Qt is a cross-platform C++ application framework. Qt's primary feature
- is its rich set of widgets that provide standard GUI functionality.
- .
- The Qt Charts module provides a set of easy to use chart components.
- .
- This package contains the shared library for Qt 6 Charts QML.
-
 Package: qml6-module-qtcharts
 Architecture: any
 Multi-Arch: same
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends},
+Breaks: libqt6chartsqml6,
+Replaces: libqt6chartsqml6,
 Description: Qt 6 Charts QML module
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.
@@ -63,16 +52,13 @@ Description: Qt 6 Charts QML module
  This package provides the QML module for Qt 6 Charts.
 
 Package: qt6-charts-dev
-Provides: libqt6charts6-dev (= ${binary:Version})
+Provides: libqt6charts6-dev (= ${binary:Version}),
 Section: libdevel
 Architecture: any
 Multi-Arch: same
-Depends: libqt6charts6 (= ${binary:Version}),
-         libqt6chartsqml6  (= ${binary:Version}),
-         qt6-base-dev,
-         ${misc:Depends},
-Breaks: libqt6charts6-dev (<< 6.3.1-3~)
-Replaces: libqt6charts6-dev (<< 6.3.1-3~)
+Depends: libqt6charts6 (= ${binary:Version}), qt6-base-dev, ${misc:Depends},
+Breaks: libqt6charts6-dev (<< 6.3.1-3~),
+Replaces: libqt6charts6-dev (<< 6.3.1-3~),
 Description: Qt 6 Charts - development files
  Qt is a cross-platform C++ application framework. Qt's primary feature
  is its rich set of widgets that provide standard GUI functionality.

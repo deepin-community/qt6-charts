@@ -1,3 +1,15 @@
+qt6-charts (6.6.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.6.1).
+  * Bump Qt B-Ds to 6.6.1.
+  * Update list of installed files.
+  * Update symbols from buildlogs.
+  * Remove binary package libqt6chartsqml6.
+  * Update d/copyright.
+
+ -- Patrick Franz <deltaone@debian.org>  Wed, 20 Dec 2023 01:11:50 +0100
+
 qt6-charts (6.4.2-5) unstable; urgency=medium
 
   [ Patrick Franz ]

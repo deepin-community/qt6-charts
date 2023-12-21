@@ -4,6 +4,10 @@
 #ifndef QCHARTGLOBAL_H
 #define QCHARTGLOBAL_H
 
+#if 0
+#pragma qt_class(QChartGlobal)
+#endif
+
 #include <QtCore/qglobal.h>
 #include <QtCharts/qtcharts-config.h>
 #include <QtCharts/qtchartsexports.h>
@@ -19,14 +23,5 @@
    can be used like #if (QT_CHARTS_VERSION >= QT_CHARTS_VERSION_CHECK(1, 1, 0))
 */
 #define QT_CHARTS_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
-
-/*
-    On Windows min and max conflict with standard macros
-*/
-#ifdef Q_OS_WIN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#endif
 
 #endif // QCHARTGLOBAL_H

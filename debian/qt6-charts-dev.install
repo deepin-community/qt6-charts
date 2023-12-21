@@ -138,11 +138,11 @@ usr/lib/${DEB_HOST_MULTIARCH}/libQt6Charts.prl
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6Charts.so
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6ChartsQml.prl
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6ChartsQml.so
-usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6charts_none_metatypes.json
-usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6chartsqml_none_metatypes.json
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6Charts.pc
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6ChartsQml.pc
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/metatypes/qt6charts_none_metatypes.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/metatypes/qt6chartsqml_none_metatypes.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_charts.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_chartsqml.pri
-usr/share/qt6/modules/Charts.json
-usr/share/qt6/modules/ChartsQml.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/Charts.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/ChartsQml.json

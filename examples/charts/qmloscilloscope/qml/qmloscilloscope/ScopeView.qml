@@ -1,5 +1,5 @@
-// Copyright (C) 2016 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Copyright (C) 2023 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
 import QtQuick
 import QtCharts
@@ -7,9 +7,12 @@ import QtCharts
 //![1]
 ChartView {
     id: chartView
+
+    property bool openGL: openGLSupported
+
     animationOptions: ChartView.NoAnimation
     theme: ChartView.ChartThemeDark
-    property bool openGL: openGLSupported
+
     onOpenGLChanged: {
         if (openGLSupported) {
             var series1 = series("signal 1")

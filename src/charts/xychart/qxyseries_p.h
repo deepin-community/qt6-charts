@@ -1,4 +1,4 @@
-// Copyright (C) 2021 The Qt Company Ltd.
+// Copyright (C) 2022 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 //  W A R N I N G
@@ -14,6 +14,7 @@
 #define QXYSERIES_P_H
 
 #include <private/qabstractseries_p.h>
+#include <private/qxyseries_p.h>
 #include <QtCharts/private/qchartglobal_p.h>
 #include <QtCore/qvariant.h>
 #include <QtCore/qhash.h>
@@ -24,7 +25,6 @@
 
 QT_BEGIN_NAMESPACE
 
-class QXYSeries;
 class QAbstractAxis;
 
 class Q_CHARTS_PRIVATE_EXPORT QXYSeriesPrivate: public QAbstractSeriesPrivate
@@ -47,7 +47,8 @@ public:
     void drawPointLabels(QPainter *painter, const QList<QPointF> &allPoints, const int offset = 0);
     void drawSeriesPointLabels(QPainter *painter, const QList<QPointF> &points,
                                const int offset = 0, const QHash<int, int> &offsets = {},
-                               const QList<int> &indexesToSkip = {});
+                               const QList<int> &indexesToSkip = {},
+                               const QHash<int, QString> &customLabels = {});
 
     void drawBestFitLine(QPainter *painter, const QRectF &clipRect);
     QPair<qreal, qreal> bestFitLineEquation(bool &ok) const;
@@ -59,6 +60,10 @@ public:
     void setMarkerSize(qreal markerSize);
 
     QList<qreal> colorByData() const;
+
+    bool setPointConfiguration(const int index, const QXYSeries::PointConfiguration key,
+                               const QVariant &value);
+
 
 Q_SIGNALS:
     void seriesUpdated();
