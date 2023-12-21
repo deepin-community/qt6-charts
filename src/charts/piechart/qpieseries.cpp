@@ -34,7 +34,7 @@ QT_BEGIN_NAMESPACE
     by setting a starting angle and angle span for the series.
     A full pie is 360 degrees, where 0 is at 12 a'clock.
 
-    See the \l {PieChart Example} {pie chart example} or \l {DonutChart Example} {donut chart example} to learn how to use QPieSeries.
+    See the \l {Charts with Widgets Gallery} to learn how to use QPieSeries.
     \image examples_piechart.png
     \image examples_donutchart.png
 
@@ -64,7 +64,7 @@ QT_BEGIN_NAMESPACE
 
     The following QML example shows how to create a simple pie chart.
 
-    \snippet qmlchart/qml/qmlchart/View1.qml 1
+    \snippet qmlchartsgallery/qml/PieChart.qml 1
 
     \beginfloatleft
     \image examples_qmlchart1.png

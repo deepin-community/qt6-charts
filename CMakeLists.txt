@@ -1,3 +1,6 @@
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Generated from qtcharts.pro.
 
 cmake_minimum_required(VERSION 3.16)
@@ -14,7 +17,8 @@ project(QtCharts
 set(QT_USE_FIXED_QT_ADD_RESOURCE_BASE TRUE)
 
 find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS BuildInternals Core) # special case
-find_package(Qt6 ${PROJECT_VERSION} CONFIG OPTIONAL_COMPONENTS Gui Widgets OpenGL OpenGLWidgets Quick Qml QuickTest Test) # special case
+find_package(Qt6 ${PROJECT_VERSION} CONFIG OPTIONAL_COMPONENTS Gui Widgets OpenGL OpenGLWidgets Multimedia Quick Qml QuickTest Test) # special case
+qt_internal_project_setup()
 
 #special case begin
 macro(assertTargets)

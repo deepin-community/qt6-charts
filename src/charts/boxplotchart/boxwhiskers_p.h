@@ -70,6 +70,7 @@ private:
     AbstractDomain *m_domain;
     QPainterPath    m_boxPath;
     QRectF m_boundingRect;
+    Q_DECL_UNUSED_MEMBER
     bool m_hovering;
     bool m_validData;
     QBrush  m_brush;

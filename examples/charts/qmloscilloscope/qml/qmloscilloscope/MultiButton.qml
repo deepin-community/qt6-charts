@@ -1,5 +1,5 @@
-// Copyright (C) 2016 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Copyright (C) 2023 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
 import QtQuick
 
@@ -9,8 +9,8 @@ Item {
     property string text: "Option: "
     property variant items: ["first"]
     property int currentSelection: 0
-    signal selectionChanged(variant selection)
 
+    signal selectionChanged(variant selection)
     signal clicked
 
     implicitWidth: buttonText.implicitWidth + 5

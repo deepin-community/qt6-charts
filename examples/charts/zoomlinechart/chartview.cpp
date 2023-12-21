@@ -1,12 +1,12 @@
-// Copyright (C) 2016 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// Copyright (C) 2023 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
 #include "chartview.h"
-#include <QtGui/QMouseEvent>
 
-ChartView::ChartView(QChart *chart, QWidget *parent) :
-    QChartView(chart, parent),
-    m_isTouching(false)
+#include <QMouseEvent>
+
+ChartView::ChartView(QChart *chart, QWidget *parent)
+    : QChartView(chart, parent)
 {
     setRubberBand(QChartView::RectangleRubberBand);
 }
