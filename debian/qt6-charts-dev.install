@@ -146,3 +146,5 @@ usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_charts.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_chartsqml.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/Charts.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/ChartsQml.json
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6Charts/Qt6ChartsVersionlessAliasTargets.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6ChartsQml/Qt6ChartsQmlVersionlessAliasTargets.cmake

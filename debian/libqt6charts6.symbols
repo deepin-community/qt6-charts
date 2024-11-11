@@ -2954,7 +2954,6 @@ libQt6Charts.so.6 libqt6charts6 #MINVER#
  _ZN7XYChart19handlePointReplacedEi@Qt_6_PRIVATE_API 6.6.1
  _ZN7XYChart19handlePointsRemovedEii@Qt_6_PRIVATE_API 6.6.1
  _ZN7XYChart19handleSeriesUpdatedEv@Qt_6_PRIVATE_API 6.6.1
- _ZN7XYChart19matchForLightMarkerERK7QPointF@Qt_6_PRIVATE_API 6.6.1
  _ZN7XYChart19offGridStatusVectorEv@Qt_6_PRIVATE_API 6.6.1
  _ZN7XYChart20handlePointsReplacedEv@Qt_6_PRIVATE_API 6.6.1
  _ZN7XYChart7clickedERK7QPointF@Qt_6_PRIVATE_API 6.6.1
@@ -3833,7 +3832,6 @@ libQt6Charts.so.6 libqt6charts6 #MINVER#
  _ZNK9QXYSeries5colorEv@Qt_6 6.6.1
  _ZNK9QXYSeries5countEv@Qt_6 6.6.1
  _ZNK9QXYSeries6pointsEv@Qt_6 6.6.1
- _ZSt19piecewise_construct@Qt_6 6.6.1
  _ZTI10ChartTitle@Qt_6_PRIVATE_API 6.6.1
  _ZTI10QBarSeries@Qt_6 6.6.1
  _ZTI10QChartView@Qt_6 6.6.1
